@@ -83,10 +83,12 @@ float pi = 3.1415;
 int t = 0;
 float k = 4.2;
 Planet[] p = null;
-SolarSystem sol = new SolarSystem(500, 400, 50, p);
+SolarSystem sol = new SolarSystem(500, 500, 50, p);
+
+Button b1 = new Button(800, 10, 80, 50);
 
 void setup() {
-  size(1000, 800);
+  size(900, 900);
   stroke(255, 255, 255);
   strokeWeight(3);
 }
@@ -112,7 +114,7 @@ void draw() {
       popMatrix();
       
       //Increment time
-      p.t++;
+      p.t += 3;
     }
   }
   
@@ -182,6 +184,16 @@ void draw() {
     ellipse(state2.x, state2.y, r, r);
     newR = r;
   }
+  
+  b1.update();
+  b1.display();
+  
+  fill(0, 0, 0);
+  textSize(25);
+  text("Clear", 810, 45);
+  noFill();
+  
+  stroke(255, 255, 255);
 }
 
 int MouseOnPlanet() {
@@ -200,58 +212,69 @@ int MouseOnPlanet() {
 }
 
 void mousePressed() {
-  if (state == 0 && MouseOnPlanet() != -1) {
-    Planet[] temp = sol.planets;
-    sol.planets = new Planet[temp.length - 1];
-    if (temp.length == 1) {
-      sol.planets = null;
+  //If the cursor is not over the clear button
+  if (mouseX < b1.rectX || mouseX > b1.rectX + b1.rectXSize ||
+      mouseY < b1.rectY || mouseY > b1.rectY + b1.rectYSize) {
+    if (state == 0 && MouseOnPlanet() != -1) {
+      Planet[] temp = sol.planets;
+      sol.planets = new Planet[temp.length - 1];
+      if (temp.length == 1) {
+        sol.planets = null;
+      }
+      else {
+        for (int i = 0; i < temp.length; i++) {
+          if (i < MouseOnPlanet()) {
+            sol.planets[i] = temp[i];
+          }
+          else if (i > MouseOnPlanet()) {
+            sol.planets[i - 1] = temp[i];
+          }
+        }
+      }
     }
-    else {
-      for (int i = 0; i < temp.length; i++) {
-        if (i < MouseOnPlanet()) {
+    else if (state == 0) {
+      state++;    
+    }
+    else if (state == 1) {
+      state++;
+      state1 = new XY(mouseX, mouseY);
+    }
+    else if (state == 2) {
+      state++;
+      radius = 2 * sqrt(pow((state1.x - mouseX), 2) + pow((state1.y - mouseY), 2));
+    }
+    else if (state == 3) {
+      state = 0;
+      if (newX * 2 + radius <= radius) {
+        newRot += pi;
+      }
+      if (sol.planets != null) {
+        Planet[] temp = sol.planets;
+        sol.planets = new Planet[temp.length + 1];
+        for (int i = 0; i < temp.length; i++) {
           sol.planets[i] = temp[i];
         }
-        else if (i > MouseOnPlanet()) {
-          sol.planets[i - 1] = temp[i];
+        Planet p = new Planet(newX, 0, newR, newRot, newA, newF);
+        sol.planets[temp.length] = p;
+        if (newX * 2 + radius > radius) {
+          p.t = p.T/2;
+        }
+      }
+      else {
+        sol.planets = new Planet[1];
+        Planet p = new Planet(newX, 0, newR, newRot, newA, newF);
+        sol.planets[0] = p;
+        if (newX * 2 + radius > radius) {
+          p.t = p.T/2;
         }
       }
     }
   }
-  else if (state == 0) {
-    state++;    
-  }
-  else if (state == 1) {
-    state++;
-    state1 = new XY(mouseX, mouseY);
-  }
-  else if (state == 2) {
-    state++;
-    radius = 2 * sqrt(pow((state1.x - mouseX), 2) + pow((state1.y - mouseY), 2));
-  }
-  else if (state == 3) {
-    state = 0;
-    if (newX * 2 + radius <= radius) {
-      newRot += pi;
-    }
-    if (sol.planets != null) {
-      Planet[] temp = sol.planets;
-      sol.planets = new Planet[temp.length + 1];
-      for (int i = 0; i < temp.length; i++) {
-        sol.planets[i] = temp[i];
-      }
-      Planet p = new Planet(newX, 0, newR, newRot, newA, newF);
-      sol.planets[temp.length] = p;
-      if (newX * 2 + radius > radius) {
-        p.t = p.T/2;
-      }
-    }
-    else {
-      sol.planets = new Planet[1];
-      Planet p = new Planet(newX, 0, newR, newRot, newA, newF);
-      sol.planets[0] = p;
-      if (newX * 2 + radius > radius) {
-        p.t = p.T/2;
-      }
-    }
+}
+
+void mouseReleased() {
+  b1.tryClick();
+  if (b1.pressed) {
+    sol.planets = p;
   }
 }
