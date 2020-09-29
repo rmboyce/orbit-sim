@@ -6,7 +6,7 @@ class Planet {
     this.a = a1;
     this.f = f1;
     this.T = sqrt(k * pow(a1, 3));
-		this.t = 0;
+    this.t = 0;
   }
 }
 
@@ -21,7 +21,7 @@ class SolarSystem {
 
 
 function CalculateNextPosition(planet) {
-	let E = CalculateE(planet);
+  let E = CalculateE(planet);
   let x = -planet.a * (cos(E) - planet.f);
   let y = -planet.a * sqrt(1 - pow(planet.f, 2)) * sin(E);
   return createVector(x, y);
@@ -63,10 +63,10 @@ function setup() {
   stroke(255, 255, 255);
   strokeWeight(2);
 	
-	state1 = createVector(0, 0);
-	state2 = createVector(0, 0);
+  state1 = createVector(0, 0);
+  state2 = createVector(0, 0);
 	
-	b1 = new Button(400, 5, 40, 25);
+  b1 = new Button(400, 5, 40, 25);
 }
 
 function draw() {
