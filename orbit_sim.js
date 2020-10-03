@@ -67,6 +67,8 @@ function setup() {
   state2 = createVector(0, 0);
 	
   b1 = new Button(400, 5, 40, 25);
+  
+  sol.planets = [ new Planet(100, 0, 10, 0, 34, 0.1), new Planet(200, 0, 20, 2, 120, 0.2), new Planet(10, 0, 5, 1, 100, 0.8) ];
 }
 
 function draw() {
@@ -225,21 +227,15 @@ function mousePressed() {
         newRot += pi;
       }
       if (sol.planets != null) {
-        let temp = sol.planets;
-        sol.planets = new Array(temp.length + 1);
-        for (let i = 0; i < temp.length; i++) {
-          sol.planets[i] = temp[i];
-        }
         let p = new Planet(newX, 0, newR, newRot, newA, newF);
-        sol.planets[temp.length] = p;
+        sol.planets.push(p);
         if (newX * 2 + radius > radius) {
           p.t = p.T/2;
         }
       }
       else {
-        sol.planets = new Array(1);
         let p = new Planet(newX, 0, newR, newRot, newA, newF);
-        sol.planets[0] = p;
+        sol.planets = [p];
         if (newX * 2 + radius > radius) {
           p.t = p.T/2;
         }
