@@ -1,7 +1,5 @@
 # Orbit Simulator
 
-Demo: https://www.openprocessing.org/sketch/750984
+Simple orbit simulator that ignores interactions between planets. It finds where the planets should be and what speeds they should be moving at by solving the two-body problem with the Kepler Equation. Uses Newton’s Method to calculate a numerical approximation.
 
-Simple orbit simulator in Processing - ignores interactions between planets. It finds where the planets should be and what speeds they should be moving at by solving the two-body problem with the Kepler Equation (https://en.wikipedia.org/wiki/Kepler%27s_equation).
-
-Uses three clicks: The first two clicks set the orbit, and the third sets the planet radius.  
+See details and a demo at my website [here](https://www.ramseyboyce.com/javascript_demos/orbit_sim/orbit_sim.html).
